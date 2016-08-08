@@ -2,13 +2,13 @@ import unittest
 from product import *
 
 
-class TestCustomer(unittest.TestCase):
+class TestProduct(unittest.TestCase):
 
   @classmethod
   def setUpClass(self):
     pass
 
-# ******************* NEW Product ****************************
+# ******************* Choose Product ****************************
   def test_new_product_creation(self):
     product = Product(
               product_name = "craft beer",
