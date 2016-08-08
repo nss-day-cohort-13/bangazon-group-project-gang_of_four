@@ -7,7 +7,7 @@ class TestPayment(unittest.TestCase):
   def setUpClass(self):
     pass
 
-# ******************* NEW USER ****************************
+# ******************* NEW PAYMENT ****************************
   def test_new_payment_creation(self):
     payment = Payment(
               payment_name = "visa",
