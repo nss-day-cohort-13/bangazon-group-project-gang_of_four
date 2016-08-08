@@ -13,17 +13,17 @@ class TestOrder(unittest.TestCase):
   def test_new_order_creation(self):
     customer = Customer("Billy Bob", "123 Melbourne", "Hville", "VA", "12345", "123-456-7890")
     order = Order(
-              customer = customer.cust_uuid,
-              open=True
+              customer.cust_uuid,
+              pay_uuid=None
               )
 
     #not sure if this is written correctly (below)
     self.assertEqual(order.cust_uuid, customer.cust_uuid)
-    self.assertEqual(order.pay_option_uuid, None)
-    self.assertEqual(order.open, True)
+    self.assertEqual(order.pay_uuid, None)
+    self.assertEqual(order.order_is_open, True)
     self.assertIsInstance(order, Order)
     self.assertIsNotNone(order.cust_uuid)
-    self.assertIsNotNone(order.pay_uuid)
+    self.assertIsNone(order.pay_uuid)
     self.assertIsNotNone(order.order_uuid)
 
 if __name__ == '__main__':
