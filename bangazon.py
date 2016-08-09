@@ -13,17 +13,16 @@ class Bangazon():
     """
     self.current_customer = None
 
-
     try:
-      self.all_customers = self.deserialize_customers()
+      self.all_customers = self.deserialize_data('customer.p')
     except EOFError:
       self.all_customers = {}
     try:
-      self.all_payments = self.deserialize_payments()
+      self.all_payments = self.deserialize_data('payment.p')
     except EOFError:
       self.all_payments = {}
     try:
-      self.all_products = self.deserialize_products()
+      self.all_products = self.deserialize_data('products.p')
     except EOFError:
       self.all_products = {}
 
@@ -70,7 +69,7 @@ class Bangazon():
       elif user_choice == 'admin':
         self.create_product_type()
       elif user_choice == '7':
-        sys.exit
+        sys.exit()
       else:
         return self.show_main_menu()
 
@@ -89,6 +88,9 @@ class Bangazon():
     print('test creation', new_customer.cust_uuid)
     self.current_customer = new_customer
     print('current cust', self.current_customer.name)
+    self.all_customers[new_customer.cust_uuid] = new_customer
+
+    self.serialize_data(self.all_customers, 'customers.p')
     time.sleep(1)
     pass
 
@@ -154,29 +156,15 @@ class Bangazon():
     time.sleep(.5)
     pass
 
-  def serialize_customers(self):
+  def serialize_data(self, data, filename):
     # wb+ w/r in binday format
     pass
 
-  def deserialize_customers(self):
+  def deserialize_data(self, filename):
+    # filename
     # rb+ r/w in binary format
     pass
 
-  def serialize_payments(self):
-    # wb+ w/r in binday format
-    pass
-
-  def deserialize_payments(self):
-    # rb+ r/w in binary format
-    pass
-
-  def serialize_products(self):
-    # wb+ w/r in binday format
-    pass
-
-  def deserialize_products(self):
-    # rb+ r/w in binary format
-    pass
 
 
 if __name__ == '__main__':
