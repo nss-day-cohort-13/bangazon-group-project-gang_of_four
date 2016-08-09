@@ -17,7 +17,6 @@ class TestOrder(unittest.TestCase):
               pay_uuid=None
               )
 
-    #not sure if this is written correctly (below)
     self.assertEqual(order.cust_uuid, customer.cust_uuid)
     self.assertEqual(order.pay_uuid, None)
     self.assertEqual(order.order_is_open, True)
