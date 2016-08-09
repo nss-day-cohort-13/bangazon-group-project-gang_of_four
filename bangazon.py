@@ -158,12 +158,19 @@ class Bangazon():
 
   def serialize_data(self, data, filename):
     # wb+ w/r in binday format
-    pass
+    with open(filename, 'wb+') as file:
+      pickle.dump(data, file)
+
 
   def deserialize_data(self, filename):
     # filename
     # rb+ r/w in binary format
-    pass
+    try:
+      with open(filename, 'rb+') as file:
+        data = pickle.load(file)
+    except FileNotFoundError:
+      data = {}
+    return data
 
 
 
