@@ -104,7 +104,19 @@ class Bangazon():
 
   def create_payment_type(self):
     self.page_clear()
-    print('option 3 - Create Payment Type')
+    print('Create your payment type.')
+    time.sleep(.5)
+    print('Enter your payment name.')
+    payment_name = input('Payment Name: ')
+    print('Enter your payment account number.')
+    payment_accountNum = input('Payment Account #: ')
+    new_payment = Payment(payment_name, payment_accountNum)
+    # print('Payment type created.', new_payment.pay_uuid)
+    # self.payment = new_payment
+    self.all_customers[new_customer.cust_uuid] = new_customer
+    self.serialize_data(self.all_customers, 'customers.p')
+    time.sleep(1)
+    self.show_main_menu()
     time.sleep(.5)
     # user input - payment_name, payment_accountNum
     # creates pay_uuid
