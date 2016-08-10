@@ -4,6 +4,8 @@ import pickle
 import time
 import uuid
 from customer import *
+from payment import *
+from product import *
 
 class Bangazon():
 
@@ -16,6 +18,8 @@ class Bangazon():
 
     """
     self.current_customer = None
+    self.current_product = None
+    self.current_payment = None
 
     try:
       self.all_customers = self.deserialize_data(self.customers_filename)
@@ -44,13 +48,13 @@ class Bangazon():
     while True:
       self.page_clear()
       if not self.current_customer:
-        print('No Current Customer')
+        print('\nNo Current Customer')
       else:
-        print('  Current customer: ', self.current_customer.name)
-      print("""  *********************************************************
+        print('  \nCurrent customer: ', self.current_customer.name)
+      print("""  \n*********************************************************
   **  Welcome to Bangazon! Command Line Ordering System  **
   *********************************************************
-  1. Create a customer account
+  \n1. Create a customer account
   2. Choose active customer
   3. Create a payment option
   4. Add product to shopping cart
@@ -72,7 +76,7 @@ class Bangazon():
           time.sleep(1.5)
           continue
         else:
-          self.open_order()
+          self.select_product_type()
       elif user_choice == '5':
         if not self.current_customer:
           print('Please create or select a customer')
@@ -146,7 +150,27 @@ class Bangazon():
     time.sleep(1)
 
   def select_payment_type(self): # will move to within Order Process
-    pass
+    while True:
+      self.page_clear()
+      print('Select a Payment')
+      if self.all_payments == {}:
+        print('No payments exist')
+        time.sleep(1.5)
+        return #back to main menu
+      else:
+        pa_line_to_uuid = self.list_payments() # returns uuid {line_number: uuid}
+        line_number = input("Select a Payment > ") # line_number = line selected
+        if line_number not in pa_line_to_uuid:
+          print('Not a valid Payment')
+          time.sleep(1)
+        else:
+          current_uuid = pa_line_to_uuid.get(line_number) # get uuid from cu_line_to_uuid
+          self.current_payment = self.all_payments.get(current_uuid) # pass uuid from line = current payment
+          print('You chose: ', self.all_payments[current_uuid].payment_name)
+          time.sleep(1.5)
+
+          return #back to main menu
+
 
   def create_product_type(self):
     self.page_clear()
@@ -163,10 +187,28 @@ class Bangazon():
     time.sleep(5)
     pass
 
-    # user input - product_name, product_price
-    # creates product_uuid
-    # new_product_type = Product(product_name, product_price, product_uuid)
-    pass
+  def select_product_type(self):
+    while True:
+      self.page_clear()
+      print('Select a Product')
+      if self.all_products == {}:
+        print('No products exist')
+        time.sleep(1.5)
+        return #back to main menu
+      else:
+        pr_line_to_uuid = self.list_products() # returns uuid {line_number: uuid}
+        line_number = input("Select a Product > ") # line_number = line selected
+        if line_number not in pr_line_to_uuid:
+          print('Not a valid Product')
+          time.sleep(1)
+        else:
+
+          current_uuid = pr_line_to_uuid.get(line_number) # get uuid from pr_line_to_uuid
+          self.current_product = self.all_products.get(current_uuid) # pass uuid from line = current product
+          #current_uuid = product_uuid this is what we need to push to line_item after order has been created
+          print('You chose: ', self.all_products[current_uuid].product_name)
+          time.sleep(1.5)
+          return #back to main menu
 
   def list_customers(self):
     line_count = 1
@@ -179,12 +221,22 @@ class Bangazon():
 
 
   def list_payments(self):
-    # lists all_payments with a number next to name
-    pass
+    line_count = 1
+    pa_line_to_uuid = {} #new dict to hold uuid
+    for uuid, value in self.all_payments.items():
+      pa_line_to_uuid[str(line_count)] = uuid
+      print('{}.  {}'.format(line_count, value.payment_name))
+      line_count += 1
+    return pa_line_to_uuid # to select_payment
 
   def list_products(self):
-    # lists all_products with a number next to name
-    pass
+    line_count = 1
+    pr_line_to_uuid = {} #new dict to hold uuid
+    for uuid, value in self.all_products.items():
+      pr_line_to_uuid[str(line_count)] = uuid
+      print('{}.  {}'.format(line_count, value.product_name))
+      line_count += 1
+    return pr_line_to_uuid # to select_product
 
 
   def open_order(self):
@@ -194,8 +246,6 @@ class Bangazon():
     time.sleep(.5)
     ## called when Add Product is selected
     # new_order = Order(cust_uuid)
-
-    pass
 
   def close_order(self): # may go on order class
     self.page_clear()
