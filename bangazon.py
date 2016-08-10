@@ -1,11 +1,15 @@
 import os
 import sys
 import pickle
-import time # if we need time
+import time
 import uuid
 from customer import *
 
 class Bangazon():
+
+  customers_filename = 'customers.p'
+  payments_filename = 'payments.p'
+  products_filename = 'products.p'
 
   def __init__(self):
     """Initialization
@@ -14,15 +18,15 @@ class Bangazon():
     self.current_customer = None
 
     try:
-      self.all_customers = self.deserialize_data('customer.p')
+      self.all_customers = self.deserialize_data(self.customers_filename)
     except EOFError:
       self.all_customers = {}
     try:
-      self.all_payments = self.deserialize_data('payment.p')
+      self.all_payments = self.deserialize_data(self.payments_filename)
     except EOFError:
       self.all_payments = {}
     try:
-      self.all_products = self.deserialize_data('products.p')
+      self.all_products = self.deserialize_data(self.products_filename)
     except EOFError:
       self.all_products = {}
 
@@ -34,26 +38,28 @@ class Bangazon():
     clear()
 
   def show_main_menu(self):
-    # shows main menu and allows 'admin' to add products if current user
+    ''' Shows main menu and allows 'admin' to add products if current user
+
+    '''
     while True:
       self.page_clear()
-
-      print('  Current customer: ', self.current_customer)
+      if not self.current_customer:
+        print('No Current Customer')
+      else:
+        print('  Current customer: ', self.current_customer.name)
       print("""  *********************************************************
-    **  Welcome to Bangazon! Command Line Ordering System  **
-    *********************************************************
-    1. Create a customer account
-    2. Choose active customer
-    3. Create a payment option
-    4. Add product to shopping cart
-    5. Complete an order
-    6. See product popularity
-    7. Leave Bangazon!""")
+  **  Welcome to Bangazon! Command Line Ordering System  **
+  *********************************************************
+  1. Create a customer account
+  2. Choose active customer
+  3. Create a payment option
+  4. Add product to shopping cart
+  5. Complete an order
+  6. See product popularity
+  7. Leave Bangazon!""")
 
       user_choice = input("Select an option: ").lower()
-      print('x', user_choice)
-      time.sleep(1)
-    # if user_choice in 'option':
+      # time.sleep(1)
       if user_choice == '1':
         self.create_customer()
       elif user_choice == '2':
@@ -61,9 +67,19 @@ class Bangazon():
       elif user_choice == '3':
         self.create_payment_type()
       elif user_choice == '4':
-        self.open_order()
+        if not self.current_customer:
+          print('Please create or select a customer')
+          time.sleep(1.5)
+          continue
+        else:
+          self.open_order()
       elif user_choice == '5':
-        self.close_order()
+        if not self.current_customer:
+          print('Please create or select a customer')
+          time.sleep(1.5)
+          continue
+        else:
+          self.close_order()
       elif user_choice == '6':
         self.run_product_popularity_report()
       elif user_choice == 'admin':
@@ -71,13 +87,15 @@ class Bangazon():
       elif user_choice == '7':
         sys.exit()
       else:
-        return self.show_main_menu()
+        print('Invalid Input')
+        time.sleep(1)
 
 
 
   def create_customer(self):
     self.page_clear()
     print("Let's create a customer")
+
     name = input('Enter First and Last Name: ')
     address = input('Enter your Street and House Number: ')
     city = input('Enter your City: ')
@@ -85,22 +103,32 @@ class Bangazon():
     postal_code = input('Enter your zip code: ')
     phone_number = input('Enter your phone number: ')
     new_customer = Customer(name, address, city, state, postal_code, phone_number)
-    print('test creation', new_customer.cust_uuid)
-    self.current_customer = new_customer
-    print('current cust', self.current_customer.name)
-    self.all_customers[new_customer.cust_uuid] = new_customer
 
-    self.serialize_data(self.all_customers, 'customers.p')
+    self.current_customer = new_customer
+    self.all_customers[new_customer.cust_uuid] = new_customer
+    self.serialize_data(self.all_customers, self.customers_filename)
     time.sleep(1)
-    pass
+
 
   def select_customer(self):
-    self.page_clear()
-    print('option 2 Select Customer')
-    time.sleep(.5)
-    # allows selection of customer
-    # makes current_customer = selected_customer
-    pass
+    while True:
+      self.page_clear()
+      print('Select a Customer')
+      if self.all_customers == {}:
+        print('No customers exist, please create a new customer')
+        time.sleep(1.5)
+        return #back to main menu
+      else:
+        cu_line_to_uuid = self.list_customers() # returns uuid {line_number: uuid}
+        line_number = input("Select a Customer > ") # line_number = line selected
+        if line_number not in cu_line_to_uuid:
+          print('Not a valid Customer')
+          time.sleep(1)
+        else:
+          current_uuid = cu_line_to_uuid.get(line_number) # get uuid from cu_line_to_uuid
+          self.current_customer = self.all_customers.get(current_uuid) # pass uuid from line = current cust
+          return #back to main menu
+
 
   def create_payment_type(self):
     self.page_clear()
@@ -130,8 +158,14 @@ class Bangazon():
     pass
 
   def list_customers(self):
-    # lists all_customers with a number next to name
-    pass
+    line_count = 1
+    cu_line_to_uuid = {} #new dict to hold uuid
+    for uuid, value in self.all_customers.items():
+      cu_line_to_uuid[str(line_count)] = uuid
+      print('{}.  {}'.format(line_count, value.name))
+      line_count += 1
+    return cu_line_to_uuid # to select_customer
+
 
   def list_payments(self):
     # lists all_payments with a number next to name
@@ -141,7 +175,7 @@ class Bangazon():
     # lists all_products with a number next to name
     pass
 
-  def open_order(self):
+  def open_order(self): #basically = select product type
     self.page_clear()
     print('option 4 - Open Order')
     time.sleep(.5)
