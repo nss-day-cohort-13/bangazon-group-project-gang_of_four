@@ -2,9 +2,15 @@ import uuid
 
 
 class Order:
+''' This will be taking in all of the order parameters:
+       cust_uuid and pay_uuid
 
-    '''only passing in 'self' because other than that there is only the uuids
-    and the open or close thing'''
+    Also, has the order_uuid
+      Which will be required by the line_item module
+
+    Return: NA
+'''
+
     def __init__(self, cust_uuid, pay_uuid=None):
             self.cust_uuid = cust_uuid
             self.order_uuid = uuid.uuid4()

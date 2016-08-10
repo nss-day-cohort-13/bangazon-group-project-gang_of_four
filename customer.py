@@ -2,6 +2,14 @@ import uuid
 
 
 class Customer:
+''' This will be taking in all of the customer parameters:
+    name, address, city, state, postal_code, phone_number
+
+    Also, has the cust_uuid
+      Which will be required by the order module
+
+    Return: NA
+'''
 
 
     def __init__(self, name, address, city, state, postal_code, phone_number):

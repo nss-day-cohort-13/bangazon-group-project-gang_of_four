@@ -2,9 +2,14 @@ import uuid
 
 
 class Line_Item:
+''' This will be taking in all of the Line_Item parameters:
+    product_uuid and order_uuid
 
-    '''only passing in 'self' because other than that there is only the uuids
-    and the open or close thing'''
+    Also, has the line_item_uuid
+
+    Return: NA
+'''
+
     def __init__(self, product_uuid, order_uuid):
             self.product_uuid = product_uuid
             self.line_item_uuid = uuid.uuid4()
