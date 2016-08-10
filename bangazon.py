@@ -4,6 +4,8 @@ import pickle
 import time
 import uuid
 from customer import *
+from payment import *
+from product import *
 
 class Bangazon():
 
