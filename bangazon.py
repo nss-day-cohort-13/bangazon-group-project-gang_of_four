@@ -147,7 +147,7 @@ class Bangazon():
 
     gets the uuid for the customer
 
-    assigns uuid and and serializes data
+    assigns uuid
     '''
 
     while True:
@@ -197,6 +197,14 @@ class Bangazon():
 
 
   def select_payment_type(self): # will move to within Order Process
+    '''
+    prints payment options
+      goes through exception of payment not existing
+      and not a valid payment selected
+
+    gets the uuid for the payment
+
+    '''
     while True:
       self.page_clear()
       print('Select a Payment')
@@ -222,6 +230,12 @@ class Bangazon():
 
 
   def create_product_type(self):
+    '''
+    This is the Admin log in page for a product.
+    prompts user to product name and price and assigns that to a variable
+
+    serializes data
+    '''
     self.page_clear()
     print('Welcome, Admin, to the **Add A Product** Page')
     time.sleep(.5)
@@ -239,6 +253,7 @@ class Bangazon():
 # ******************** SELECTING  PRODUCT ********************
 
   def select_product_type(self):
+
     while True:
       self.page_clear()
       print('Select a Product')
