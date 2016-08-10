@@ -48,13 +48,13 @@ class Bangazon():
     while True:
       self.page_clear()
       if not self.current_customer:
-        print('\nNo Current Customer')
+        print('No Current Customer')
       else:
-        print('  \nCurrent customer: ', self.current_customer.name)
-      print("""  \n*********************************************************
+        print('Current customer: ', self.current_customer.name)
+      print("""  *********************************************************
   **  Welcome to Bangazon! Command Line Ordering System  **
   *********************************************************
-  \n1. Create a customer account
+  1. Create a customer account
   2. Choose active customer
   3. Create a payment option
   4. Add product to shopping cart
