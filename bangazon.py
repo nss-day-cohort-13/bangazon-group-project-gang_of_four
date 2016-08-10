@@ -186,12 +186,15 @@ class Bangazon():
     # lists all_products with a number next to name
     pass
 
-  def open_order(self): #basically = select product type
+
+  def open_order(self):
+    '''select payment type - select products - save order-id#'''
     self.page_clear()
     print('option 4 - Open Order')
     time.sleep(.5)
     ## called when Add Product is selected
     # new_order = Order(cust_uuid)
+
     pass
 
   def close_order(self): # may go on order class
