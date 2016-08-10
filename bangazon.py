@@ -113,15 +113,9 @@ class Bangazon():
     new_payment = Payment(payment_name, payment_accountNum)
     # print('Payment type created.', new_payment.pay_uuid)
     # self.payment = new_payment
-    self.all_customers[new_customer.cust_uuid] = new_customer
-    self.serialize_data(self.all_customers, 'customers.p')
+    self.all_payments[new_payment.pay_uuid] = new_payment
+    self.serialize_data(self.all_payments, 'payments.p')
     time.sleep(1)
-    self.show_main_menu()
-    time.sleep(.5)
-    # user input - payment_name, payment_accountNum
-    # creates pay_uuid
-    # new_payment_type = Payment(payment_name, payment_accountNum, pay_uuid)
-    pass
 
   def select_payment_type(self): # will move to within Order Process
     pass
