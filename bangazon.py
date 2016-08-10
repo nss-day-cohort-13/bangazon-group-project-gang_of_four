@@ -1,3 +1,4 @@
+# ******************** IMPORTS *****************************
 import os
 import sys
 import pickle
@@ -7,6 +8,7 @@ from customer import *
 from payment import *
 from product import *
 
+# ******************** MAIN BANGAZON CLASS ********************
 class Bangazon():
 
   customers_filename = 'customers.p'
@@ -14,12 +16,15 @@ class Bangazon():
   products_filename = 'products.p'
 
   def __init__(self):
-    """Initialization
+    """
+    Initialization
 
     """
     self.current_customer = None
     self.current_product = None
     self.current_payment = None
+
+# ******************** DESERIALIZATION ********************
 
     try:
       self.all_customers = self.deserialize_data(self.customers_filename)
@@ -34,15 +39,23 @@ class Bangazon():
     except EOFError:
       self.all_products = {}
 
+# ******************** CLEARING THE PAGE ********************
+
   def page_clear(self):
-    """ This clears the page when called
+    """
+    This clears the page when called
 
     """
     clear = lambda: os.system('cls')
     clear()
 
+
+# ******************** SHOWING THE MAIN MENU ********************
+
+
   def show_main_menu(self):
-    ''' Shows main menu and allows 'admin' to add products if current user
+    '''
+    Shows main menu and allows 'admin' to add products if current user
 
     '''
     while True:
@@ -94,6 +107,7 @@ class Bangazon():
         print('Invalid Input')
         time.sleep(1)
 
+# ******************** CREATING CUSTOMER ********************
 
 
   def create_customer(self):
@@ -113,6 +127,7 @@ class Bangazon():
     self.serialize_data(self.all_customers, self.customers_filename)
     time.sleep(1)
 
+# ******************** SELECTING CUSTOMER ********************
 
   def select_customer(self):
     while True:
@@ -133,6 +148,8 @@ class Bangazon():
           self.current_customer = self.all_customers.get(current_uuid) # pass uuid from line = current cust
           return #back to main menu
 
+# ******************** CREATING PAYMENT ********************
+
 
   def create_payment_type(self):
     self.page_clear()
@@ -148,6 +165,9 @@ class Bangazon():
     self.all_payments[new_payment.pay_uuid] = new_payment
     self.serialize_data(self.all_payments, 'payments.p')
     time.sleep(1)
+
+# ******************** SELECTING PAYMENT ********************
+
 
   def select_payment_type(self): # will move to within Order Process
     while True:
@@ -171,6 +191,8 @@ class Bangazon():
 
           return #back to main menu
 
+# ******************** CREATING PRODUCT ********************
+
 
   def create_product_type(self):
     self.page_clear()
@@ -186,6 +208,8 @@ class Bangazon():
     self.serialize_data(self.all_products, 'products.p')
     time.sleep(5)
     pass
+
+# ******************** SELECTING  PRODUCT ********************
 
   def select_product_type(self):
     while True:
@@ -210,6 +234,9 @@ class Bangazon():
           time.sleep(1.5)
           return #back to main menu
 
+# ******************** LISTING CUSTOMERS ********************
+
+
   def list_customers(self):
     line_count = 1
     cu_line_to_uuid = {} #new dict to hold uuid
@@ -218,6 +245,8 @@ class Bangazon():
       print('{}.  {}'.format(line_count, value.name))
       line_count += 1
     return cu_line_to_uuid # to select_customer
+
+# ******************** LISTING PAYMENTS ********************
 
 
   def list_payments(self):
@@ -229,6 +258,8 @@ class Bangazon():
       line_count += 1
     return pa_line_to_uuid # to select_payment
 
+# ******************** LISTING PRODUCTS ********************
+
   def list_products(self):
     line_count = 1
     pr_line_to_uuid = {} #new dict to hold uuid
@@ -238,9 +269,13 @@ class Bangazon():
       line_count += 1
     return pr_line_to_uuid # to select_product
 
+# ******************** OPEN ORDER ********************
+
 
   def open_order(self): #basically = select product type
     pass
+
+# ******************** CLOSE ORDER ********************
 
 
   def close_order(self): # may go on order class
@@ -249,6 +284,8 @@ class Bangazon():
     time.sleep(.5)
     pass
 
+# ******************** POPULARITY REPORT ********************
+
   def run_product_popularity_report(self):
     #TBD
     self.page_clear()
@@ -256,10 +293,14 @@ class Bangazon():
     time.sleep(.5)
     pass
 
+# ******************** SERIALIZE DATA ********************
+
   def serialize_data(self, data, filename):
     # wb+ w/r in binday format
     with open(filename, 'wb+') as file:
       pickle.dump(data, file)
+
+# ******************** DESERIALIZE DATA ********************
 
 
   def deserialize_data(self, filename):
