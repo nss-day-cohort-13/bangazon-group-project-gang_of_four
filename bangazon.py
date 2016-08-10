@@ -44,7 +44,7 @@ class Bangazon():
     while True:
       self.page_clear()
       if not self.current_customer:
-        print('No customer Selected')
+        print('No Current Customer')
       else:
         print('  Current customer: ', self.current_customer.name)
       print("""  *********************************************************
@@ -59,7 +59,7 @@ class Bangazon():
   7. Leave Bangazon!""")
 
       user_choice = input("Select an option: ").lower()
-      time.sleep(1)
+      # time.sleep(1)
       if user_choice == '1':
         self.create_customer()
       elif user_choice == '2':
@@ -67,9 +67,19 @@ class Bangazon():
       elif user_choice == '3':
         self.create_payment_type()
       elif user_choice == '4':
-        self.open_order()
+        if not self.current_customer:
+          print('Please create or select a customer')
+          time.sleep(1.5)
+          continue
+        else:
+          self.open_order()
       elif user_choice == '5':
-        self.close_order()
+        if not self.current_customer:
+          print('Please create or select a customer')
+          time.sleep(1.5)
+          continue
+        else:
+          self.close_order()
       elif user_choice == '6':
         self.run_product_popularity_report()
       elif user_choice == 'admin':
@@ -109,13 +119,13 @@ class Bangazon():
         time.sleep(1.5)
         return #back to main menu
       else:
-        line_to_uuid = self.list_customers() # returns uuid {line_number: uuid}
+        cu_line_to_uuid = self.list_customers() # returns uuid {line_number: uuid}
         line_number = input("Select a Customer > ") # line_number = line selected
-        if line_number not in line_to_uuid:
+        if line_number not in cu_line_to_uuid:
           print('Not a valid Customer')
           time.sleep(1)
         else:
-          current_uuid = line_to_uuid.get(line_number) # get uuid from line_to_uuid
+          current_uuid = cu_line_to_uuid.get(line_number) # get uuid from cu_line_to_uuid
           self.current_customer = self.all_customers.get(current_uuid) # pass uuid from line = current cust
           return #back to main menu
 
@@ -143,12 +153,12 @@ class Bangazon():
 
   def list_customers(self):
     line_count = 1
-    line_to_uuid = {} #new dict to hold uuid
+    cu_line_to_uuid = {} #new dict to hold uuid
     for uuid, value in self.all_customers.items():
-      line_to_uuid[str(line_count)] = uuid
+      cu_line_to_uuid[str(line_count)] = uuid
       print('{}.  {}'.format(line_count, value.name))
       line_count += 1
-    return line_to_uuid # to select_customer
+    return cu_line_to_uuid # to select_customer
 
 
   def list_payments(self):
@@ -159,7 +169,7 @@ class Bangazon():
     # lists all_products with a number next to name
     pass
 
-  def open_order(self):
+  def open_order(self): #basically = select product type
     self.page_clear()
     print('option 4 - Open Order')
     time.sleep(.5)
