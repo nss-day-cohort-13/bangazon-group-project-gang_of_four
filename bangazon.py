@@ -156,8 +156,19 @@ class Bangazon():
 
   def create_product_type(self):
     self.page_clear()
-    print('Welcome Admin')
+    print('Welcome, Admin, to the **Add A Product** Page')
     time.sleep(.5)
+
+    print("\nLet's add a product")
+    add_product = input('Enter Product Name: ')
+    add_product_price = input('Enter Product Price: ')
+    new_product = Product(add_product, add_product_price)
+    self.all_products[new_product.product_uuid] = new_product
+    print("Your product was created.")
+    self.serialize_data(self.all_products, 'products.p')
+    time.sleep(5)
+    pass
+
     # user input - product_name, product_price
     # creates product_uuid
     # new_product_type = Product(product_name, product_price, product_uuid)
