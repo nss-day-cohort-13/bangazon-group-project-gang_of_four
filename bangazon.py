@@ -55,6 +55,8 @@ class Bangazon():
 
   def show_main_menu(self):
     '''
+    while True loop that runs through the menu while the program is active
+
     Shows main menu and allows 'admin' to add products if current user
 
     '''
@@ -74,6 +76,9 @@ class Bangazon():
   5. Complete an order
   6. See product popularity
   7. Leave Bangazon!""")
+
+
+# else if statements that run through functions needed for menu
 
       user_choice = input("Select an option: ").lower()
       # time.sleep(1)
@@ -111,6 +116,11 @@ class Bangazon():
 
 
   def create_customer(self):
+    '''
+    takes in the inputs and assigns them to variables for customer attributes
+
+    assigns uuid and and serializes data
+    '''
     self.page_clear()
     print("Let's create a customer")
 
@@ -130,6 +140,16 @@ class Bangazon():
 # ******************** SELECTING CUSTOMER ********************
 
   def select_customer(self):
+    '''
+    prints customer list
+      goes through exception of no customer yet existing
+        and not a valid customer chosen
+
+    gets the uuid for the customer
+
+    assigns uuid and and serializes data
+    '''
+
     while True:
       self.page_clear()
       print('Select a Customer')
@@ -152,6 +172,13 @@ class Bangazon():
 
 
   def create_payment_type(self):
+    '''
+    prompts user to create  payment
+    asks for payment account number
+
+    assigns uuid and and serializes data
+    '''
+
     self.page_clear()
     print('Create your payment type.')
     time.sleep(.5)
