@@ -27,8 +27,6 @@ class TestLineItem(unittest.TestCase):
     self.assertEqual(line_item.product_uuid, product.product_uuid)
     self.assertEqual(order.order_is_open, True)
     self.assertIsInstance(line_item, Line_Item)
-    self.assertIsNotNone(payment.pay_uuid)
-    self.assertIsNotNone(customer.cust_uuid)
     self.assertIsNotNone(line_item.line_item_uuid)
     self.assertIsNotNone(order.order_uuid)
     self.assertIsNotNone(payment.pay_uuid)
