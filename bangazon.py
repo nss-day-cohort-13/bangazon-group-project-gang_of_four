@@ -51,7 +51,7 @@ class Bangazon():
         print('No Current Customer')
       else:
         print('Current customer: ', self.current_customer.name)
-        print("""  *********************************************************
+      print("""  *********************************************************
   **  Welcome to Bangazon! Command Line Ordering System  **
   *********************************************************
   1. Create a customer account
