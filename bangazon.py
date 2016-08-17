@@ -6,6 +6,7 @@ import uuid
 from customer import *
 from payment import *
 from product import *
+from table import *
 from order import *
 from line_item import *
 
@@ -52,8 +53,7 @@ class Bangazon():
     """ This clears the page when called
 
     """
-    clear = lambda: os.system('cls')
-    clear()
+    os.system('cls' if os.name == 'nt' else 'clear')
 
   def show_main_menu(self):
     ''' Shows main menu and allows 'admin' to add products if current user
@@ -65,7 +65,7 @@ class Bangazon():
         print('No Current Customer')
       else:
         print('Current customer: ', self.current_customer.name)
-        print("""  *********************************************************
+      print("""  *********************************************************
   **  Welcome to Bangazon! Command Line Ordering System  **
   *********************************************************
   1. Create a customer account
@@ -137,7 +137,7 @@ class Bangazon():
 
     self.current_customer = new_customer
     self.all_customers[new_customer.cust_uuid] = new_customer
-    self.serialize_data(self.all_customers, self.customers_filename)
+    BangTable.customer_table(new_customer)
     time.sleep(1)
 
 
