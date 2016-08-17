@@ -239,7 +239,7 @@ class Bangazon():
           time.sleep(1.5)
           new_order = Order(self.current_customer.cust_uuid)
           self.all_orders[new_order.order_uuid] = new_order
-
+          BangTable.order_table(new_order)
           print(new_order.order_uuid)
           time.sleep(1)
 
