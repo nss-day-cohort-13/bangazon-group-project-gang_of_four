@@ -6,6 +6,7 @@ import uuid
 from customer import *
 from payment import *
 from product import *
+from table import *
 from order import *
 from line_item import *
 
@@ -52,8 +53,7 @@ class Bangazon():
     """ This clears the page when called
 
     """
-    clear = lambda: os.system('cls')
-    clear()
+    os.system('cls' if os.name == 'nt' else 'clear')
 
   def show_main_menu(self):
     ''' Shows main menu and allows 'admin' to add products if current user
@@ -137,7 +137,7 @@ class Bangazon():
 
     self.current_customer = new_customer
     self.all_customers[new_customer.cust_uuid] = new_customer
-    self.serialize_data(self.all_customers, self.customers_filename)
+    BangTable.customer_table(new_customer)
     time.sleep(1)
 
 
@@ -168,8 +168,8 @@ class Bangazon():
     print('Enter your payment name.')
     payment_name = input('Payment Name: ')
     print('Enter your payment type.')
-    payment_accountNum = input('Payment Method: ')
-    new_payment = Payment(payment_name, payment_accountNum)
+    payment_account_number = input('Payment Method: ')
+    new_payment = Payment(payment_name, payment_account_number)
     # print('Payment type created.', new_payment.pay_uuid)
     # self.payment = new_payment
     self.all_payments[new_payment.pay_uuid] = new_payment
@@ -287,9 +287,13 @@ class Bangazon():
     return or_line_to_uuid # to select_product
 
 
-  def open_order(self): #basically = select product type
-    pass
-
+  def open_order(self):
+    '''select payment type - select products - save order-id#'''
+    self.page_clear()
+    print('option 4 - Open Order')
+    time.sleep(.5)
+    ## called when Add Product is selected
+    # new_order = Order(cust_uuid)
 
   def close_order(self): # may go on order class
     self.page_clear()
