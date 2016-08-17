@@ -25,7 +25,8 @@ class BangTable:
 
 
   def payment_table(new_payment):
-    '''Puts Customer Data in a Table
+    '''
+    Puts Payment Data in Table
     '''
     with sqlite3.connect('bangazon.db') as khan:
       k = khan.cursor()
@@ -42,3 +43,23 @@ class BangTable:
 
 
       khan.commit()
+
+  def product_table(new_product):
+      '''
+      Puts Product Data in Table
+      '''
+      with sqlite3.connect('bangazon.db') as khan:
+        k = khan.cursor()
+
+        try:
+          k.execute("""create table product
+            (product_name, product_price)""")
+        except sqlite3.OperationalError:
+          pass
+
+
+        k.execute("insert into product values (?, ?)",
+                      (new_product.product_name, new_product.product_price))
+
+
+        khan.commit()
