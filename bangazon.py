@@ -77,7 +77,6 @@ class Bangazon():
   7. Leave Bangazon!""")
 
       user_choice = input("Select an option: ").lower()
-      # time.sleep(1)
       if user_choice == '1':
         self.create_customer()
       elif user_choice == '2':
@@ -173,7 +172,7 @@ class Bangazon():
     # print('Payment type created.', new_payment.pay_uuid)
     # self.payment = new_payment
     self.all_payments[new_payment.pay_uuid] = new_payment
-    self.serialize_data(self.all_payments, 'payments.p')
+    BangTable.payment_table(new_payment)
     time.sleep(1)
 
   def select_payment_type(self): # will move to within Order Process
