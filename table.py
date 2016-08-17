@@ -63,3 +63,23 @@ class BangTable:
 
 
         khan.commit()
+
+  def order_table(new_order):
+      '''
+      Puts Order Data in Table
+      '''
+      with sqlite3.connect('bangazon.db') as khan:
+        k = khan.cursor()
+
+        try:
+          k.execute("""create table order
+            (order_id, customer_id, payment_id)""")
+        except sqlite3.OperationalError:
+          pass
+
+
+        k.execute("insert into order values (?, ?)",
+                      (new_order.order_id, new_order.customer_id, new_order.payment_id))
+
+
+        khan.commit()
