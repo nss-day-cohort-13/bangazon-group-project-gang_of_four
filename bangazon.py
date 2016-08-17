@@ -7,12 +7,16 @@ from customer import *
 from payment import *
 from product import *
 from table import *
+from order import *
+from line_item import *
 
 class Bangazon():
 
   customers_filename = 'customers.p'
   payments_filename = 'payments.p'
   products_filename = 'products.p'
+  orders_filename = 'orders.p'
+  line_items_filename = 'line_items.p'
 
   def __init__(self):
     """Initialization
@@ -21,6 +25,8 @@ class Bangazon():
     self.current_customer = None
     self.current_product = None
     self.current_payment = None
+    self.current_order = None
+    self.current_line_items = None
 
     try:
       self.all_customers = self.deserialize_data(self.customers_filename)
@@ -34,6 +40,14 @@ class Bangazon():
       self.all_products = self.deserialize_data(self.products_filename)
     except EOFError:
       self.all_products = {}
+    try:
+      self.all_orders = self.deserialize_data(self.orders_filename)
+    except EOFError:
+      self.all_orders = {}
+
+      self.all_line_items = self.deserialize_data(self.line_items_filename)
+    except EOFError:
+      self.all_line_items = {}
 
   def page_clear(self):
     """ This clears the page when called
@@ -90,6 +104,19 @@ class Bangazon():
         self.create_product_type()
       elif user_choice == '7':
         sys.exit()
+      elif user_choice == 'payments':
+        self.list_payments()
+        time.sleep(4)
+      elif user_choice == 'orders':
+        self.list_orders()
+        time.sleep(4)
+      elif user_choice == 'products':
+        self.list_products()
+        time.sleep(4)
+      elif user_choice == 'customers':
+        self.list_customers()
+        time.sleep(4)
+
       else:
         print('Invalid Input')
         time.sleep(1)
@@ -140,9 +167,9 @@ class Bangazon():
     time.sleep(.5)
     print('Enter your payment name.')
     payment_name = input('Payment Name: ')
-    print('Enter your payment account number.')
-    payment_accountNum = input('Payment Account #: ')
-    new_payment = Payment(payment_name, payment_accountNum)
+    print('Enter your payment type.')
+    payment_account_number = input('Payment Method: ')
+    new_payment = Payment(payment_name, payment_account_number)
     # print('Payment type created.', new_payment.pay_uuid)
     # self.payment = new_payment
     self.all_payments[new_payment.pay_uuid] = new_payment
@@ -179,12 +206,12 @@ class Bangazon():
 
     print("\nLet's add a product")
     add_product = input('Enter Product Name: ')
-    add_product_price = input('Enter Product Price: ')
+    add_product_price = input('Enter Product Price $ ')
     new_product = Product(add_product, add_product_price)
     self.all_products[new_product.product_uuid] = new_product
     print("Your product was created.")
     self.serialize_data(self.all_products, 'products.p')
-    time.sleep(5)
+    time.sleep(2)
     pass
 
   def select_product_type(self):
@@ -206,8 +233,20 @@ class Bangazon():
           current_uuid = pr_line_to_uuid.get(line_number) # get uuid from pr_line_to_uuid
           self.current_product = self.all_products.get(current_uuid) # pass uuid from line = current product
           #current_uuid = product_uuid this is what we need to push to line_item after order has been created
+          product_uuid = current_uuid
           print('You chose: ', self.all_products[current_uuid].product_name)
+          # print('current cust', self.current_customer.cust_uuid)
+          # print(product_uuid)
           time.sleep(1.5)
+          new_order = Order(self.current_customer.cust_uuid)
+          self.all_orders[new_order.order_uuid] = new_order
+
+          print(new_order.order_uuid)
+          time.sleep(1)
+
+
+          new_line_item = Line_Item(product_uuid, new_order.order_uuid)
+
           return #back to main menu
 
   def list_customers(self):
@@ -237,6 +276,15 @@ class Bangazon():
       print('{}.  {}'.format(line_count, value.product_name))
       line_count += 1
     return pr_line_to_uuid # to select_product
+
+  def list_orders(self):
+    line_count = 1
+    or_line_to_uuid = {} #new dict to hold uuid
+    for uuid, value in self.all_orders.items():
+      or_line_to_uuid[str(line_count)] = uuid
+      print('{}.  Order UUID {}'.format(line_count, value.order_uuid))
+      line_count += 1
+    return or_line_to_uuid # to select_product
 
 
   def open_order(self):
