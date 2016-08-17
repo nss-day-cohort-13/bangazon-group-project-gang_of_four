@@ -168,8 +168,8 @@ class Bangazon():
     print('Enter your payment name.')
     payment_name = input('Payment Name: ')
     print('Enter your payment type.')
-    payment_accountNum = input('Payment Method: ')
-    new_payment = Payment(payment_name, payment_accountNum)
+    payment_account_number = input('Payment Method: ')
+    new_payment = Payment(payment_name, payment_account_number)
     # print('Payment type created.', new_payment.pay_uuid)
     # self.payment = new_payment
     self.all_payments[new_payment.pay_uuid] = new_payment
