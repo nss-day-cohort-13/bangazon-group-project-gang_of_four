@@ -52,8 +52,9 @@ class Bangazon():
     """ This clears the page when called
 
     """
-    clear = lambda: os.system('cls')
-    clear()
+    os.system('cls' if os.name == 'nt' else 'clear')
+    # clear = lambda: os.system('cls')
+    # clear()
 
   def show_main_menu(self):
     ''' Shows main menu and allows 'admin' to add products if current user
