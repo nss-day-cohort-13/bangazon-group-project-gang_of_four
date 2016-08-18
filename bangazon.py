@@ -28,10 +28,9 @@ class Bangazon():
     self.current_order = None
     self.current_line_items = None
 
-    try:
-      self.all_customers = BangTable.query_all_customers(self.customers_filename)
-    except EOFError:
-      self.all_customers = {}
+
+
+    self.all_customers = BangTable.query_all_customers()
     try:
       self.all_payments = self.deserialize_data(self.payments_filename)
     except EOFError:
@@ -64,7 +63,7 @@ class Bangazon():
       if not self.current_customer:
         print('No Current Customer')
       else:
-        print('Current customer: ', self.current_customer.name)
+        print('Current customer: ', self.current_customer[1])
       print("""  *********************************************************
   **  Welcome to Bangazon! Command Line Ordering System  **
   *********************************************************
@@ -132,11 +131,10 @@ class Bangazon():
     state = input('Enter your State: ')
     postal_code = input('Enter your zip code: ')
     phone_number = input('Enter your phone number: ')
-    new_customer = Customer(name, address, city, state, postal_code, phone_number)
+    new_customer = (None, name, address, city, state, postal_code, phone_number)
 
-    self.current_customer = new_customer
-    self.all_customers[new_customer.cust_uuid] = new_customer
-    BangTable.customer_table(new_customer)
+    self.current_customer = BangTable.customer_table(new_customer)
+    self.all_customers.append(self.current_customer)
     time.sleep(1)
 
     # BangTable.create_customer(new_customer)
@@ -145,7 +143,7 @@ class Bangazon():
     while True:
       self.page_clear()
       print('Select a Customer')
-      if self.all_customers == {}:
+      if self.all_customers == []:
         print('No customers exist, please create a new customer')
         time.sleep(1.5)
         return #back to main menu
@@ -156,8 +154,7 @@ class Bangazon():
           print('Not a valid Customer')
           time.sleep(1)
         else:
-          current_uuid = cu_line_to_uuid.get(line_number) # get uuid from cu_line_to_uuid
-          self.current_customer = self.all_customers.get(current_uuid) # pass uuid from line = current cust
+          self.current_customer = self.all_customers[line_number - 1] # pass uuid from line = current cust
           return #back to main menu
 
 
@@ -252,9 +249,9 @@ class Bangazon():
   def list_customers(self):
     line_count = 1
     cu_line_to_uuid = {} #new dict to hold uuid
-    for uuid, value in self.all_customers.items():
-      cu_line_to_uuid[str(line_count)] = uuid
-      print('{}.  {}'.format(line_count, value.name))
+    for value in self.all_customers:
+      cu_line_to_uuid[str(line_count)] = value[0]
+      print('{}.  {}'.format(line_count, value[1]))
       line_count += 1
     return cu_line_to_uuid # to select_customer
 
