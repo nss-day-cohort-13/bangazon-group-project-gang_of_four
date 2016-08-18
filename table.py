@@ -83,3 +83,17 @@ class BangTable:
 
 
         khan.commit()
+  def query_all_customers(all_customers):
+    '''Query and print all of the customers for Bangazon
+
+    Method arguments
+    ----------------
+    n/a
+    '''
+
+    with sqlite3.connect('bangazon.db') as khan:
+    k = khan.cursor()
+
+    k.execute("select * from bangazon where trans=? and symbol=?", ("""create table customer
+        (name text, address text, city text, state text, postal_code text, phone_number text)"""))
+    khan.commit()
