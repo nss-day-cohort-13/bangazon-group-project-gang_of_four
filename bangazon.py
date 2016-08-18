@@ -12,7 +12,7 @@ from line_item import *
 
 class Bangazon():
 
-  customers_filename = 'customers.p'
+  customers_filename = 'bangazon.db'
   payments_filename = 'payments.p'
   products_filename = 'products.p'
   orders_filename = 'orders.p'
@@ -29,7 +29,7 @@ class Bangazon():
     self.current_line_items = None
 
     try:
-      self.all_customers = self.deserialize_data(self.customers_filename)
+      self.all_customers = BangTable.query_all_customers(self.customers_filename)
     except EOFError:
       self.all_customers = {}
     try:

@@ -92,8 +92,17 @@ class BangTable:
     '''
 
     with sqlite3.connect('bangazon.db') as khan:
-    k = khan.cursor()
+      k = khan.cursor()
 
-    k.execute("select * from bangazon where trans=? and symbol=?", ("""create table customer
-        (name text, address text, city text, state text, postal_code text, phone_number text)"""))
-    khan.commit()
+      k.execute("select * from bangazon where new_customer", ("""create table customer
+          (name text, address text, city text, state text, postal_code text, phone_number text)"""))
+      khan.commit()
+
+
+
+
+
+
+
+
+
