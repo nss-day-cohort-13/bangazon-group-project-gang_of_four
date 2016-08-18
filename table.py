@@ -16,15 +16,13 @@ class BangTable:
           (cust_uuid INTEGER PRIMARY KEY AUTOINCREMENT, name text, address text, city text, state text, postal_code text, phone_number text)""")
       except sqlite3.OperationalError:
         pass
-      k.execute("insert into customer values (?, ?, ?, ?, ?, ?, ?)",
-                    (None, new_customer.name, new_customer.address, new_customer.city, new_customer.state, new_customer.postal_code, new_customer.phone_number))
+      k.execute("insert into customer values (?, ?, ?, ?, ?, ?, ?)", new_customer)
       khan.commit()
 
-      print("new_customer.name", new_customer.name)
-      new_customer = k.execute("select cust_uuid from customer where name = ?", (new_customer.name,))
+      new_customer = k.execute("select * from customer where name = ?", (new_customer[1],))
       active_customer = new_customer.fetchone()
       print(active_customer)
-      time.sleep(5)
+      return active_customer
 
   def payment_table(new_payment):
     '''
@@ -90,3 +88,27 @@ class BangTable:
         k.execute("insert into order values (?, ?, ?)",
                       (None, new_order.order_uuid, new_order.product_uuid))
         khan.commit()
+  def query_all_customers():
+    '''Query and print all of the customers for Bangazon
+
+    Method arguments
+    ----------------
+    n/a
+    '''
+
+    with sqlite3.connect('bangazon.db') as khan:
+      k = khan.cursor()
+      try:
+        k.execute("select * from customer")
+        return k.fetchall()
+      except sqlite3.OperationalError:
+        return []
+
+
+
+
+
+
+
+
+
