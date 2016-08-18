@@ -39,6 +39,11 @@ class BangTable:
                     (None, new_payment.payment_name, new_payment.payment_account_number))
       khan.commit()
 
+      print("new_payment.name", new_payment.payment_name)
+      new_payment = k.execute("select payment_uuid from payment where payment_name = ?", (new_payment.payment_name,))
+      active_payment = new_payment.fetchone()
+      print("here is your active payment", active_payment)
+      time.sleep(2)
 
   def product_table(new_product):
       '''
