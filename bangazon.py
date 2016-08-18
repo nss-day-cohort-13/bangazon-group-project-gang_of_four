@@ -139,6 +139,7 @@ class Bangazon():
     BangTable.customer_table(new_customer)
     time.sleep(1)
 
+    # BangTable.create_customer(new_customer)
 
   def select_customer(self):
     while True:
