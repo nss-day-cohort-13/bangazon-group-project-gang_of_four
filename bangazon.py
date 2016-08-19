@@ -158,6 +158,7 @@ class Bangazon():
           return #back to main menu
 
 
+
   def create_payment_type(self):
     self.page_clear()
     print('Create your payment type.')
