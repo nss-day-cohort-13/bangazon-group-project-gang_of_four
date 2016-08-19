@@ -145,7 +145,7 @@ class Bangazon():
     while True:
       self.page_clear()
       print('Select a Customer')
-      if self.all_customers == {}:
+      if self.all_customers == []:
         print('No customers exist, please create a new customer')
         time.sleep(1.5)
         return #back to main menu
@@ -156,9 +156,9 @@ class Bangazon():
           print('Not a valid Customer')
           time.sleep(1)
         else:
-          current_uuid = cu_line_to_uuid.get(line_number) # get uuid from cu_line_to_uuid
-          self.current_customer = self.all_customers.get(current_uuid) # pass uuid from line = current cust
+          self.current_customer = self.all_customers[line_number - 1] # pass uuid from line = current cust
           return #back to main menu
+
 
 
   def create_payment_type(self):
